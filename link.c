@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
 
     /* Attach bpf program */
-    link_fd = bpf_program__attach_raw_tracepoint(prog, "spi_controller_idle");
+    link_fd = bpf_program__attach_tracepoint(prog, "spi", "spi_controller_idle");
     if(!link_fd)
     {
     	fprintf(stderr, "ERROR: attaching\n");

@@ -5,16 +5,16 @@
 
 char LICENSE[] SEC("license") = "GPL";
 
-//struct spi_controller_args {
-//    uint16_t common_type;
-//	uint8_t common_flags;
-//	uint8_t common_preempt_count;
-//	int32_t common_pid;
-//	int bus_num;
-//};
+struct spi_controller_args {
+   uint16_t common_type;
+	uint8_t common_flags;
+	uint8_t common_preempt_count;
+	int32_t common_pid;
+	int bus_num;
+};
 
-SEC("raw_tracepoint/spi/spi_controller_idle")
-int idle22(struct bpf_raw_tracepoint_args *ctx)
+SEC("tracepoint/spi/spi_controller_idle")
+int idle22(struct spi_controller_args *ctx)
 {
     bpf_printk("SPI idle!\n");
     return 0;
