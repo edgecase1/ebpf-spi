@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	goto cleanup;
     }
 
-    prog = bpf_object__find_program_by_name(obj, "idle22"); 
+    prog = bpf_object__find_program_by_name(obj, "submit22"); 
     //alternative: prog = bpf_object__next_program(obj, NULL);
     if (!prog) {
         fprintf(stderr, "ERROR: finding a prog in obj file failed\n");
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
 
     /* Attach bpf program */
-    link_fd = bpf_program__attach_tracepoint(prog, "spi", "spi_controller_idle");
+    link_fd = bpf_program__attach_raw_tracepoint(prog, "spi_message_submit");
     if(!link_fd)
     {
     	fprintf(stderr, "ERROR: attaching\n");
