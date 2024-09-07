@@ -13,7 +13,7 @@ struct spi_controller_args {
 	int bus_num;
 };
 
-SEC("tracepoint/spi/spi_controller_idle")
+SEC("raw_tracepoint/spi/spi_controller_idle")
 int idle22(struct spi_controller_args *ctx)
 {
     bpf_printk("SPI idle!\n");
