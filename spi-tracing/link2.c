@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
     bump_memlock_rlimit();
 
-    obj = bpf_object__open_file("./spyspi.bpf.o", NULL);
+    obj = bpf_object__open_file("./spyspi2.bpf.o", NULL);
     if (libbpf_get_error(obj)) {
         fprintf(stderr, "ERROR: opening BPF object file failed\n");
         return 0;
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	goto cleanup;
     }
 
-    prog = bpf_object__find_program_by_name(obj, "idle22"); 
+    prog = bpf_object__find_program_by_name(obj, "transfer_start"); 
     //alternative: prog = bpf_object__next_program(obj, NULL);
     if (!prog) {
         fprintf(stderr, "ERROR: finding a prog in obj file failed\n");
@@ -62,13 +62,14 @@ int main(int argc, char **argv)
 
 
     /* Attach bpf program */
-    link_fd = bpf_program__attach_tracepoint(prog, "spi", "spi_controller_idle");
+    //link_fd = bpf_program__attach_raw_tracepoint(prog, "spi_set_cs");
+    link_fd = bpf_program__attach_tracepoint(prog, "spi", "spi_transfer_start");
     if(!link_fd)
     {
     	fprintf(stderr, "ERROR: attaching\n");
     	goto cleanup;
     }
-    
+
     system("/bin/sh");
 
 cleanup:
